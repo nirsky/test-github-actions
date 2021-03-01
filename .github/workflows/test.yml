@@ -25,7 +25,7 @@ jobs:
     needs: job1
     runs-on: ubuntu-latest
     steps:
-
       - name: echo inputs
-        run: echo "chore: upgrade dependency '${{ needs.job1.outputs.package_name }}' to v${{ needs.job1.outputs.package_version }}"
+        run: |
+          echo "chore: upgrade dependency '${{ needs.job1.outputs.package_name }}' to v${{ needs.job1.outputs.package_version }}"
   
