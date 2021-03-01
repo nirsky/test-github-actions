@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  push:
+
+jobs:
+  job1:
+    name: job1
+    runs-on: ubuntu-latest
+    outputs:
+      package_name: ${{ steps.package_details.outputs.package_name }}
+      package_version: ${{ steps.package_details.outputs.package_version }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      
+      - name: extract package.json details
+        id: package_details
+        run: |
+          echo "::set-output name=package_name::$(jq ".name" package.json)"
+          echo "::set-output name=package_version::$(jq ".version" package.json)"
+
+  job2:
+    name: job2
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: echo inputs
+        run: echo "chore: upgrade dependency '${{ needs.job1.outputs.package_name }}' to v${{ needs.job1.outputs.package_version }}"
+  
